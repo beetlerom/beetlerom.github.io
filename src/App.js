@@ -7,8 +7,9 @@ import {
   Redirect,
 } from "react-router-dom";
 
-import About from "./components/About";
-import Bio from "./components/Bio";
+import Menu from "./components/Menu";
+import About from "./pages/About";
+import Bio from "./pages/Bio";
 
 import ProfileImg from "./daniel-ionescu.jpg";
 import "./App.css";
@@ -41,16 +42,14 @@ const ProfilePhoto = styled.img`
 `;
 
 const AboutBg = () => (
-  <Container>
-    <LeftStrip>
-      <ProfilePhoto src={ProfileImg} />
-    </LeftStrip>
-    <Router>
+  <Router>
+    <Container>
+      <LeftStrip>
+        <Menu />
+        <ProfilePhoto src={ProfileImg} />
+      </LeftStrip>
       <Switch>
         <Route exact path="/">
-          <About />
-        </Route>
-        <Route exact path="/about-me">
           <About />
         </Route>
         <Route exact path="/bio">
@@ -58,8 +57,8 @@ const AboutBg = () => (
         </Route>
         <Redirect to="/" />
       </Switch>
-    </Router>
-  </Container>
+    </Container>
+  </Router>
 );
 
 function App() {
