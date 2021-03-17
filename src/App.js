@@ -6,6 +6,8 @@ import {
   Switch,
   Redirect,
 } from "react-router-dom";
+import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa';
+import { HiOutlineMailOpen } from 'react-icons/hi';
 
 import Menu from "./components/Menu";
 import About from "./pages/About";
@@ -31,7 +33,7 @@ const LeftStrip = styled.div`
     rgba(159, 157, 158, 1) 0%,
     rgba(178, 176, 177, 1) 100%
   );
-  max-width: ${stripWidth};
+  width: ${stripWidth};
 `;
 
 const ProfilePhoto = styled.img`
@@ -41,11 +43,48 @@ const ProfilePhoto = styled.img`
   max-width: ${stripWidth};
 `;
 
+const ExternalLink = styled.a`
+  color: gray; 
+  display: inline-block;
+  width: 48px;
+  height: 48px;
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+`;
+
+const externalLinks = [{
+  icon: <FaGithub />,
+  href: 'https://github.com/beetlerom'
+}, {
+  icon: <FaLinkedin />,
+  href: 'https://www.linkedin.com/in/ionescudaniel/'
+}, {
+  icon: <FaTwitter />,
+  href: 'https://twitter.com/the_escu'
+}, {
+  icon: <HiOutlineMailOpen />,
+  href: 'mailto:beetlerom@gmail.com'
+}]
+
+const ExternalLinks = ({ externalLinks }) => {
+  return (
+    <div>
+      {externalLinks.map(({ icon, href }, idx) => (
+        <ExternalLink href={href} key={idx}>{icon}</ExternalLink>
+      ))}
+    </div>
+  )
+};
+
 const AboutBg = () => (
   <Router>
+    <Menu />
     <Container>
       <LeftStrip>
-        <Menu />
+        <ExternalLinks externalLinks={externalLinks} />
         <ProfilePhoto src={ProfileImg} />
       </LeftStrip>
       <Switch>
