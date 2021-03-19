@@ -16,31 +16,49 @@ import Bio from "./pages/Bio";
 import ProfileImg from "./daniel-ionescu.jpg";
 import "./App.css";
 
-const stripWidth = "300px";
+const stripWidth = 300;
+const stripWidthPx = `${stripWidth}px`;
+const photoZidx = 20;
+const ellipseZidx = 10;
 
 const Container = styled.div`
   display: flex;
   width: 100vw;
   height: 100vh;
-  background: rgba(178, 176, 177, 1);
+  background-image: radial-gradient(farthest-corner at 20% 20%, rgba(240,240,240,1) 20%, rgba(210,210,210,1) 60%);
 `;
 
 const LeftStrip = styled.div`
   height: 100vh;
-  background: rgb(159, 157, 158);
-  background: linear-gradient(
-    90deg,
-    rgba(159, 157, 158, 1) 0%,
-    rgba(178, 176, 177, 1) 100%
-  );
-  width: ${stripWidth};
+  width: ${stripWidthPx};
+`;
+
+const RightStrip = styled.div`
 `;
 
 const ProfilePhoto = styled.img`
   position: absolute;
-  left: 0;
-  bottom: 0;
-  max-width: ${stripWidth};
+  left: 30px;
+  top: 30px;
+  max-width: 150px;
+  border-radius: 50%;
+  border: 3px solid white;
+  z-index: ${photoZidx};
+`;
+
+const Ellipse = styled.div`
+  border-radius: 50%;
+  width: ${stripWidth * 3 / 2}px;
+  height: ${stripWidth}px;
+  transform: rotate(-45deg);
+  background: rgba(230,230,230,1);
+  position: absolute;
+  top: ${-stripWidth / 2}px;
+  left: ${-stripWidth / 2}px;
+  z-index: ${ellipseZidx};
+  box-shadow: inset -1px 5px 10px rgba(0,0,0,.2);
+  /* box-shadow: -1px 5px 10px rgba(0,0,0,.2); */
+  background-image: radial-gradient(farthest-corner at 0 0, rgba(240,240,240,1) 20%, rgba(210,210,210,1) 60%);
 `;
 
 const ExternalLink = styled.a`
@@ -83,19 +101,22 @@ const AboutBg = () => (
   <Router>
     <Menu />
     <Container>
+      <ProfilePhoto src={ProfileImg} />
+      <Ellipse />
       <LeftStrip>
         <ExternalLinks externalLinks={externalLinks} />
-        <ProfilePhoto src={ProfileImg} />
       </LeftStrip>
-      <Switch>
-        <Route exact path="/">
-          <About />
-        </Route>
-        <Route exact path="/bio">
-          <Bio />
-        </Route>
-        <Redirect to="/" />
-      </Switch>
+      <RightStrip>
+        <Switch>
+          <Route exact path="/">
+            <About />
+          </Route>
+          <Route exact path="/bio">
+            <Bio />
+          </Route>
+          <Redirect to="/" />
+        </Switch>
+      </RightStrip>
     </Container>
   </Router>
 );
