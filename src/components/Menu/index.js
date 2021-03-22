@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Link } from "react-router-dom";
 
-const menuMargin = 20; //px
+const menuMargin = 30;
 
 const LinkList = styled.ul`
   display: flex;
@@ -9,15 +9,19 @@ const LinkList = styled.ul`
   position: absolute;
   right: ${menuMargin}px;
   top: ${menuMargin}px;
+  z-index: 30;
+  margin: 0;
 `;
 
 const ListItem = styled.li`
   margin: 0 5px;
 `;
 
-const StyledLink = styled(Link)`
+const StyledLinkStyles = `
   text-decoration: none;
   position: relative;
+  color: #485b94;
+  text-transform: uppercase;
 
   &::after {
     content: '';
@@ -25,7 +29,7 @@ const StyledLink = styled(Link)`
     width: 0;
     top: 100%;
     height: 2px;
-    background: red;
+    background: #485b94;
   }
 
   &:hover::after {
@@ -42,13 +46,19 @@ const StyledLink = styled(Link)`
   }
 `;
 
+const StyledRouterLink = styled(Link)`${StyledLinkStyles}`;
+const StyledLink = styled.a`${StyledLinkStyles}`;
+
 const Menu = () => (
   <LinkList>
     <ListItem>
-      <StyledLink to="/">About </StyledLink>
+      <StyledRouterLink to="/">About </StyledRouterLink>
     </ListItem>
     <ListItem>
-      <StyledLink to="/bio">Bio </StyledLink>
+      <StyledRouterLink to="/bio">Bio </StyledRouterLink>
+    </ListItem>
+    <ListItem>
+      <StyledLink href="mailto:beetlerom@gmail.com">Contact</StyledLink>
     </ListItem>
   </LinkList>
 );

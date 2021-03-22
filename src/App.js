@@ -16,25 +16,37 @@ import Bio from "./pages/Bio";
 import ProfileImg from "./daniel-ionescu.jpg";
 import "./App.css";
 
-const stripWidth = 300;
+const stripWidth = 210;
 const stripWidthPx = `${stripWidth}px`;
-const photoZidx = 20;
+const photoZidx = 25;
 const ellipseZidx = 10;
 
 const Container = styled.div`
   display: flex;
   width: 100vw;
   height: 100vh;
-  background-image: radial-gradient(farthest-corner at 20% 20%, rgba(240,240,240,1) 20%, rgba(210,210,210,1) 60%);
+  background: repeating-linear-gradient(
+        0deg,
+        rgba(200,200,200,.3) 0px,
+        transparent 1px,
+        transparent 11px
+      ),
+      repeating-linear-gradient(
+        90deg,
+        rgba(200,200,200,.3) 0px,
+        transparent 1px,
+        transparent 11px
+      ),
+      radial-gradient(farthest-corner at 20% 20%, rgba(235,235,235,1) 20%, rgba(210,210,210,1) 60%);
 `;
 
 const LeftStrip = styled.div`
   height: 100vh;
   width: ${stripWidthPx};
+  min-width: ${stripWidthPx};
 `;
 
-const RightStrip = styled.div`
-`;
+const RightStrip = styled.div``;
 
 const ProfilePhoto = styled.img`
   position: absolute;
@@ -44,6 +56,19 @@ const ProfilePhoto = styled.img`
   border-radius: 50%;
   border: 3px solid white;
   z-index: ${photoZidx};
+  animation: showPhoto .5s ease-out forwards;
+  opacity: 0;
+
+  @keyframes showPhoto {
+    from {
+      opacity: 0;
+      left: 15px;
+    } 
+    to{
+      opacity: 1;
+      left: 30px;
+    } 
+  }
 `;
 
 const Ellipse = styled.div`
@@ -61,17 +86,21 @@ const Ellipse = styled.div`
   background-image: radial-gradient(farthest-corner at 0 0, rgba(240,240,240,1) 20%, rgba(210,210,210,1) 60%);
 `;
 
-const ExternalLink = styled.a`
-  color: gray; 
-  display: inline-block;
-  width: 48px;
-  height: 48px;
+function template(i, delay) {
+  return `
+      &:nth-child(${i + 1}) {
+        animation-delay: ${`${delay * i + .3}s`};
+       }
+    `
+}
 
-  svg {
-    width: 100%;
-    height: 100%;
+function getAnimations(items, delay) {
+  let str = ''
+  for (let i = 0; i < items; i += 1) {
+    str += template(i, delay)
   }
-`;
+  return str;
+}
 
 const externalLinks = [{
   icon: <FaGithub />,
@@ -87,19 +116,63 @@ const externalLinks = [{
   href: 'mailto:beetlerom@gmail.com'
 }]
 
+const externalLinkWidth = 24;
+
+const ExternalLink = styled.a`
+  position: relative;
+  color: gray; 
+  display: inline-block;
+  width: ${externalLinkWidth}px;
+  height: ${externalLinkWidth}px;
+  margin: 0 auto 10px;
+  opacity: 0;
+  transition: all .3s;
+  animation: appear .3s ease-out forwards;
+  ${getAnimations(externalLinks.length, .15)}
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  &:hover {
+    color: #485b94;
+    transform: translateX(3px);
+  }
+
+  @keyframes appear {
+    from {
+      opacity: 0;
+      left: -${externalLinkWidth / 2}px;
+    } 
+    to{
+      opacity: 1;
+      left: 0;
+    } 
+  }
+`;
+
+const StyledExternalLinks = styled.div`
+  position: relative;
+  padding: 210px 0 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+`;
+
 const ExternalLinks = ({ externalLinks }) => {
   return (
-    <div>
+    <StyledExternalLinks>
       {externalLinks.map(({ icon, href }, idx) => (
         <ExternalLink href={href} key={idx}>{icon}</ExternalLink>
       ))}
-    </div>
+    </StyledExternalLinks>
   )
 };
 
 const AboutBg = () => (
   <Router>
-    <Menu />
     <Container>
       <ProfilePhoto src={ProfileImg} />
       <Ellipse />
@@ -118,6 +191,7 @@ const AboutBg = () => (
         </Switch>
       </RightStrip>
     </Container>
+    <Menu />
   </Router>
 );
 
